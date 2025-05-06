@@ -1,0 +1,64 @@
+# Globale Konstanten für das Zombie-Survival-Spiel
+
+# Bildschirmeinstellungen
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+FPS = 60
+TITLE = "Zombie Survival"
+
+# Farben (RGB)
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLUE = (0, 0, 255)
+YELLOW = (255, 255, 0)
+DARKGREY = (40, 40, 40)
+LIGHTGREY = (100, 100, 100)
+
+# Spielereinstellungen
+PLAYER_SPEED = 50
+PLAYER_HEALTH = 100
+PLAYER_SIZE = 32
+PLAYER_COOLDOWN = 350  # Cooldown zwischen Schüssen in ms
+
+# Projektileinstellungen
+BULLET_SPEED = 10
+BULLET_LIFETIME = 1000  # in ms
+BULLET_SIZE = 8
+BULLET_DAMAGE = 25
+
+# Zombie-Einstellungen
+# Standard-Zombie
+ZOMBIE_NORMAL_SPEED = 20
+ZOMBIE_NORMAL_HEALTH = 100
+ZOMBIE_NORMAL_DAMAGE = 10
+ZOMBIE_NORMAL_SIZE = 32
+
+# Schneller Zombie
+ZOMBIE_FAST_SPEED = 4
+ZOMBIE_FAST_HEALTH = 50
+ZOMBIE_FAST_DAMAGE = 5
+ZOMBIE_FAST_SIZE = 30
+
+# Starker Zombie
+ZOMBIE_STRONG_SPEED = 1.5
+ZOMBIE_STRONG_HEALTH = 200
+ZOMBIE_STRONG_DAMAGE = 20
+ZOMBIE_STRONG_SIZE = 40
+
+# Wellen-Einstellungen
+WAVE_COOLDOWN = 5000  # Pause zwischen Wellen in ms
+WAVE_BASE_ZOMBIES = 5  # Anzahl Zombies in erster Welle
+WAVE_ZOMBIE_INCREMENT = 3  # Zusätzliche Zombies pro Welle
+
+# Power-Up-Einstellungen
+POWERUP_DURATION = 5000  # Dauer in ms
+HEALTH_POWERUP_AMOUNT = 25
+AMMO_POWERUP_AMOUNT = 10
+SPEED_POWERUP_MULTIPLIER = 1.5
+
+# Karten-Einstellungen
+TILESIZE = 32
+GRIDWIDTH = SCREEN_WIDTH // TILESIZE
+GRIDHEIGHT = SCREEN_HEIGHT // TILESIZE
