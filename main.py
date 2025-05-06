@@ -109,7 +109,8 @@ class Game:
                     self.paused = not self.paused
 
                 if self.game_over and event.key == pg.K_r:
-                    self.new()  # Neustart bei Game Over
+                    self.game_over = False  # Game Over-Status zurücksetzen
+                    self.playing = False    # Aktuelle Spielschleife beenden, damit new() aufgerufen wird
 
     def update(self):
         """Aktualisiert alle Sprites und Spielzustände"""

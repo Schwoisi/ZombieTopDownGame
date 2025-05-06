@@ -82,12 +82,38 @@ class Player(pg.sprite.Sprite):
         self.get_keys()
         self.get_mouse()
 
-        # Aktualisiere Position basierend auf Geschwindigkeit
-        self.pos += self.vel * self.game.dt
-        self.rect.center = self.pos
+        # X und Y separat aktualisieren für bessere Kollisionserkennung
+        # Zuerst X-Bewegung
+        old_x = self.pos.x
+        self.pos.x += self.vel.x * self.game.dt
+        self.rect.centerx = self.pos.x
 
-        # Kollisionserkennung mit Wänden
-        self.collide_with_walls()
+        # Kollisionserkennung X-Achse
+        hits_x = pg.sprite.spritecollide(self, self.game.walls, False)
+        if hits_x:
+            if self.vel.x > 0:  # Bewegung nach rechts
+                self.pos.x = hits_x[0].rect.left - self.rect.width / 2
+            if self.vel.x < 0:  # Bewegung nach links
+                self.pos.x = hits_x[0].rect.right + self.rect.width / 2
+            self.vel.x = 0
+            self.rect.centerx = self.pos.x
+
+        # Dann Y-Bewegung
+        self.pos.y += self.vel.y * self.game.dt
+        self.rect.centery = self.pos.y
+
+        # Kollisionserkennung Y-Achse
+        hits_y = pg.sprite.spritecollide(self, self.game.walls, False)
+        if hits_y:
+            if self.vel.y > 0:  # Bewegung nach unten
+                self.pos.y = hits_y[0].rect.top - self.rect.height / 2
+            if self.vel.y < 0:  # Bewegung nach oben
+                self.pos.y = hits_y[0].rect.bottom + self.rect.height / 2
+            self.vel.y = 0
+            self.rect.centery = self.pos.y
+
+        # Rect mit endgültiger Position aktualisieren
+        self.rect.center = self.pos
 
         # Power-Up-Timer aktualisieren
         self.update_powerups()
@@ -102,6 +128,7 @@ class Player(pg.sprite.Sprite):
                 self.pos.x = hits[0].rect.left - self.rect.width / 2
             if self.vel.x < 0:  # Bewegung nach links
                 self.pos.x = hits[0].rect.right + self.rect.width / 2
+            self.vel.x = 0  # Geschwindigkeit auf der X-Achse stoppen
             self.rect.centerx = self.pos.x
 
         # Y-Achse
@@ -112,8 +139,8 @@ class Player(pg.sprite.Sprite):
                 self.pos.y = hits[0].rect.top - self.rect.height / 2
             if self.vel.y < 0:  # Bewegung nach oben
                 self.pos.y = hits[0].rect.bottom + self.rect.height / 2
+            self.vel.y = 0  # Geschwindigkeit auf der Y-Achse stoppen
             self.rect.centery = self.pos.y
-
     def update_powerups(self):
         """Aktualisiert und verwaltet aktive Power-Ups"""
         now = pg.time.get_ticks()

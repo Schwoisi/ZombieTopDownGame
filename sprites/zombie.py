@@ -35,11 +35,18 @@ class Zombie(pg.sprite.Sprite):
             self.vel = self.vel.normalize() * self.speed
 
         # Position aktualisieren
+        old_pos = self.pos.copy()  # Position für Kollisionsprüfung merken
         self.pos += self.vel * self.game.dt
-        self.rect.center = self.pos
 
-        # Kollisionserkennung mit Wänden (optional)
-        # self.collide_with_walls()
+        # X und Y separat aktualisieren für korrekte Kollisionserkennung
+        self.rect.centerx = self.pos.x
+        self.collide_with_walls('x')
+
+        self.rect.centery = self.pos.y
+        self.collide_with_walls('y')
+
+        # Rect mit endgültiger Position aktualisieren
+        self.rect.center = self.pos
 
     def take_damage(self, amount):
         """Reduziert die Gesundheit des Zombies"""
@@ -68,27 +75,27 @@ class Zombie(pg.sprite.Sprite):
             from sprites.powerup import SpeedPowerup
             SpeedPowerup(self.game, self.pos.x, self.pos.y)
 
-    def collide_with_walls(self):
+    def collide_with_walls(self, dir):
         """Prüft und verhindert Kollisionen mit Wänden"""
-        # X-Achse
-        self.rect.centerx = self.pos.x
-        hits = pg.sprite.spritecollide(self, self.game.walls, False)
-        if hits:
-            if self.vel.x > 0:
-                self.pos.x = hits[0].rect.left - self.rect.width / 2
-            if self.vel.x < 0:
-                self.pos.x = hits[0].rect.right + self.rect.width / 2
-            self.rect.centerx = self.pos.x
+        if dir == 'x':
+            hits = pg.sprite.spritecollide(self, self.game.walls, False)
+            if hits:
+                if self.vel.x > 0:  # Bewegung nach rechts
+                    self.pos.x = hits[0].rect.left - self.rect.width / 2
+                if self.vel.x < 0:  # Bewegung nach links
+                    self.pos.x = hits[0].rect.right + self.rect.width / 2
+                self.vel.x = 0
+                self.rect.centerx = self.pos.x
 
-        # Y-Achse
-        self.rect.centery = self.pos.y
-        hits = pg.sprite.spritecollide(self, self.game.walls, False)
-        if hits:
-            if self.vel.y > 0:
-                self.pos.y = hits[0].rect.top - self.rect.height / 2
-            if self.vel.y < 0:
-                self.pos.y = hits[0].rect.bottom + self.rect.height / 2
-            self.rect.centery = self.pos.y
+        if dir == 'y':
+            hits = pg.sprite.spritecollide(self, self.game.walls, False)
+            if hits:
+                if self.vel.y > 0:  # Bewegung nach unten
+                    self.pos.y = hits[0].rect.top - self.rect.height / 2
+                if self.vel.y < 0:  # Bewegung nach oben
+                    self.pos.y = hits[0].rect.bottom + self.rect.height / 2
+                self.vel.y = 0
+                self.rect.centery = self.pos.y
 
 
 class NormalZombie(Zombie):
